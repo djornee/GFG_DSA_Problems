@@ -1,0 +1,57 @@
+"""
+Python solution for Burning Tree problem at https://www.geeksforgeeks.org/problems/burning-tree/1
+difficulty: hard
+time complexity and auxiliary space both O(n)
+expected auxiliary space is O(height of tree), but this was the best I could come up with
+"""
+
+class Solution:
+    def minTime(self, root, target):
+        result = [0]
+        # part one of solution finds time to burn for nodes along the path from root to target
+        # adds burnTime attribute to nodes
+        def rootTime(node, target):
+            # off edge of tree
+            if not node:
+                return -1
+
+            # found target, begin returning burnTime
+            if node.data == target:
+                node.burnTime = 0
+                return 1
+
+            # recursively search and populate burnTime
+            node.burnTime = max(rootTime(node.left, target), rootTime(node.right, target))
+
+            # node is in path to root
+            if node.burnTime != -1:
+                return 1 + node.burnTime
+            # node not in path to root
+            else: return -1
+        
+        rootTime(root, target)
+
+        # part two of solution sends burn paths down tree branches and updates result
+        def findTime(node, time, result):
+            # check for new longest burn time
+            result[0] = max(result[0], time)
+            # recursively traverse left branch
+            if node.left:
+                # use burnTime already calculated
+                if hasattr(node.left, "burnTime") and node.left.burnTime != -1:
+                    findTime(node.left, node.left.burnTime, result)
+                # use burnTime of current node, +1 for next node
+                else:
+                    findTime(node.left, time + 1, result)
+            # recursively traverse right branch
+            if node.right:
+                # use burnTime already calculated
+                if hasattr(node.right, "burnTime") and node.right.burnTime != -1:
+                    findTime(node.right, node.right.burnTime, result)
+                # use burnTime of current node, +1 for next node
+                else:
+                    findTime(node.right, time + 1, result)
+                    
+        findTime(root, root.burnTime, result)
+        
+        return result[0]
