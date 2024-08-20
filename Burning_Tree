@@ -1,6 +1,9 @@
 """
 Python solution for Burning Tree problem at https://www.geeksforgeeks.org/problems/burning-tree/1
 difficulty: hard
+inputs are the root of a binary tree and the value of the data of one of the tree's nodes (node data is distinct)
+goal is to find the time it takes for fire to spread from target node to burn the full tree
+fire takes 1 second to spread from a node to its parent, left child, and right child
 time complexity and auxiliary space both O(n)
 expected auxiliary space is O(height of tree), but this was the best I could come up with
 """
