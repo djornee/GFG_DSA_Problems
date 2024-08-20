@@ -1,0 +1,51 @@
+"""
+Python solution for Even and odd elements at even and odd positions problem at https://www.geeksforgeeks.org/problems/even-and-odd-elements-at-even-and-odd-positions1342/1
+difficulty: easy
+input is a list of integers
+goal is to return a list with even elements at even indexes and odd elements at odd indexes, maintaining order as much as possible
+*if there is an uneven number of even and odd elements, follow the pattern until running out of one or the other, and then add remaining elements to the end
+time complexity: O(n), auxiliary space: O(1)
+"""
+
+class Solution:
+    # two iterators go through input list and find even/odd elements to add to result list
+    def arrangeOddAndEven(self, arr):
+        # initialize two iterators and empty list for results
+        oddIter = iter(arr)
+        evenIter = iter(arr)
+        result = []
+        
+        while True:
+            # find next even element or None if none remain
+            nextEven = next(evenIter, None)
+            while nextEven and nextEven % 2 != 0:
+                nextEven = next(evenIter, None)
+            # find next odd element or None if none remain
+            nextOdd = next(oddIter, None)
+            while nextOdd and nextOdd % 2 != 1:
+                nextOdd = next(oddIter, None)
+            
+            # add next even element to list
+            if nextEven:
+                result.append(nextEven)
+            # no even elements remain, copy rest of input list, if anything, to result list and return
+            else:
+                while nextOdd:
+                    if nextOdd % 2 == 1:
+                        result.append(nextOdd)
+                    nextOdd = next(oddIter, None)
+                return result
+            
+            # add next odd element to list
+            if nextOdd:
+                result.append(nextOdd)
+            # no odd elements remain, copy rest of input list, if anything, to result list and return
+            else:
+                nextEven = next(evenIter, None)
+                while nextEven:
+                    if nextEven % 2 == 0:
+                        result.append(nextEven)
+                    nextEven = next(evenIter, None)
+                return result
+                
+            # if this point is reached, an even and odd element were both found--do loop again to find next
