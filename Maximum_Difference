@@ -1,0 +1,67 @@
+"""
+Python solution for Maximum Difference problem at https://www.geeksforgeeks.org/problems/maximum-difference-1587115620/1
+difficulty: medium
+input is a list of integers
+goal is to find the maximum difference between nearest left smaller element and nearest right smaller element
+for every element in the list (nearest smaller element is 0 if it doesn't exist)
+time complexity and auxiliary space complexity both O(n)
+"""
+
+class Solution:
+    def findMaxDiff(self, arr):
+        # initialize lists for a stack, left, and right smaller elements
+        stack = []
+        ls = []
+        rs = []
+        # iterate through arr, finding left smaller elements
+        for i in arr:
+            # element(s) are in the stack
+            if stack:
+                # top of stack is nearest smaller element
+                if i > stack[-1]:
+                    ls.append(stack[-1])
+                    stack.append(i)
+                else:
+                    # pop from stack while current element is <= top of stack
+                    while stack and i <= stack[-1]:
+                        stack.pop(-1)
+                    # top of stack is now nearest smaller element
+                    if stack:
+                        ls.append(stack[-1])
+                    # stack has been emptied, no nearest smaller element exists
+                    else:
+                        ls.append(0)
+                    # push current element onto stack
+                    stack.append(i)
+            # stack is empty, no nearest smaller element exists
+            else:
+                ls.append(0)
+                stack.append(i)
+        # left smaller elements list has been populated, now reverse arr for right
+        arr.reverse()
+        # start with fresh stack
+        stack = []
+        # repeat above code, but for right smaller elements list
+        for i in arr:
+            if stack:
+                if i > stack[-1]:
+                    rs.append(stack[-1])
+                    stack.append(i)
+                else:
+                    while stack and i <= stack[-1]:
+                        stack.pop(-1)
+                    if stack:
+                        rs.append(stack[-1])
+                    else:
+                        rs.append(0)
+                    stack.append(i)
+            else:
+                rs.append(0)
+                stack.append(i)
+        result = 0
+        # reverse right smaller elements list to match original arr order
+        rs.reverse()
+        # check for maximum difference
+        for i in range(len(ls)):
+            result = max(result, abs(ls[i] - rs[i]))
+        return result
