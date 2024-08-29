@@ -1,0 +1,63 @@
+"""
+Python solution for N-Queen Problem at https://www.geeksforgeeks.org/problems/n-queen-problem0315/1
+difficulty: hard
+input is an integer, n
+goal is to provide all possible combinations of queens such that no two queens can attack each other
+"""
+
+class Solution:
+    def nQueen(self, n):
+        # initialize lists for return variable and checklist for individual solutions
+        results = []
+        checklist = [-1] * n
+        
+        # nested function to find solutions and add them to results
+        # starts in left-most column and recursively proceeds to the right
+        def queens(results, checklist, col, n):
+            # for current col, loop through possible rows to check for safe queen placement
+            for i in range(n):
+                # already a queen in the same row in an earlier col, continue to next row
+                if i in checklist[:col]:
+                    continue
+                # initialize variables for checking diagonals
+                row = i
+                column = col
+                # flag denoting safe queen placement in this row/col
+                safe = True
+                # check up-left diagonals--row/col (0, 0) is top-left square
+                while row > 0 and column > 0 and safe:
+                    # go up one row and left one column each iteration
+                    row -= 1
+                    column -= 1
+                    # queen found in this diagonal, new queen can't be placed here
+                    if checklist[column] == row:
+                        safe = False
+                # reset to check down-left diagonals
+                row = i
+                column = col
+                while row < n and column > 0 and safe:
+                    # go down one row and left one column each iteration
+                    row += 1
+                    column -= 1
+                    # queen found in this diagonal, new queen can't be placed here
+                    if checklist[column] == row:
+                        safe = False
+                # no queens found in this row or either diagonal
+                if safe:
+                    # add queen to this square
+                    checklist[col] = i
+                    # final column, complete solution found
+                    if col == n - 1:
+                        # add copy of checklist, adjusted from 0- to 1-based indexing, to results
+                        results.append([x + 1 for x in checklist])
+                        # no need to loop through remaining rows in this col
+                        return
+                    # not yet in final column
+                    else:
+                        # recursively call function, passing updated checklist, for next col to the right
+                        queens(results, checklist, col + 1, n)
+        
+        # call recursive function, starting in left-most column        
+        queens(results, checklist, 0, n)
+        
+        return results
