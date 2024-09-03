@@ -1,0 +1,14 @@
+"""
+Python solution for Count ways to N'th Stair (Order does not matter) problem at https://www.geeksforgeeks.org/problems/count-ways-to-nth-stairorder-does-not-matter5639/1
+difficuly: medium
+input is a positive integer, n
+goal is to return the number of ways to climb to the nth stair, taking either 1 or 2 stairs at a time ([1, 2] === [2, 1])
+time complexity is O(1), no auxiliary space used
+"""
+
+class Solution:
+	def nthStair(self, n):
+	    # use integer division because the ways to reach an even n are equal to the ways to reach n + 1
+	    # n // 2 gives the number of 2s in the way with maximum number of 2s
+	    # solution is 1 (for that way) plus n // 2 for each way that converts a 2 to 1, 1
+		  return 1 + n // 2
