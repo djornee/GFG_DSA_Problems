@@ -1,0 +1,28 @@
+"""
+Python solution for Kadane's Algorithm problem at https://www.geeksforgeeks.org/problems/kadanes-algorithm-1587115620/1
+difficulty: medium
+input is a list of integers, arr
+goal is to return the maximum sum of any contiguous sub-array of arr
+"""
+
+class Solution:
+    
+    # Function to find the sum of contiguous subarray with maximum sum. Uses Kadane's algorithm.
+    def maxSubArraySum(self, arr):
+        # initialize variable for the maximum possible sum so far
+        # starts with the lowest possible input value
+        maxSoFar = -10000000
+        # initialize variable for what the maximum sum would be for a sub-array ending at each element
+        maxEndingHere = 0
+        # loop through list
+        for i in arr:
+            # update maximum sum ending at current element
+            maxEndingHere += i
+            # new possible maximum found
+            if(maxSoFar < maxEndingHere):
+                maxSoFar = maxEndingHere
+            # reset maxEndingHere to 0 if negative
+            if(maxEndingHere < 0):
+                maxEndingHere = 0
+        
+        return maxSoFar
