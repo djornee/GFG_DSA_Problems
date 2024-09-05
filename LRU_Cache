@@ -1,0 +1,107 @@
+"""
+Python solution for LRU Cache problem at https://www.geeksforgeeks.org/problems/lru-cache/1
+difficulty: hard
+input is an integer, cap, for cache capacity and a series of calls to get() and set()
+goal is to implement constructor and methods for LRUCache class to function as an LRU cache
+time complexity and auxiliary space for get() and set() methods are both O(1)
+"""
+
+# extra class to implement cache as a doubly linked list
+class Node:
+    # constructor creates unlinked node that stores key/value pair
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+        
+
+class LRUCache:
+      
+    #Constructor for initializing the cache capacity with the given value.  
+    def __init__(self, cap):
+        self.cap = cap
+        # initialize a dict for direct lookup of nodes
+        self.dict = {}
+        # initialize attributes that hold references to the beginning and end of the linked list
+        self.mru = False
+        self.lru = False
+        
+    #Function to return value corresponding to the key.
+    def get(self, key):
+        # node with key is in cache
+        if key in self.dict:
+            # retrieve node
+            node = self.dict[key]
+            # call method to "use" node, updating linked list order
+            self.use(node)
+            return node.value
+        # node with key not found in cache
+        return -1
+    
+    # extra method to "use" a node (i.e., update order of cache / linked list)
+    def use(self, node):
+        # node is least recently used, move lru reference to next node, if any
+        if node == self.lru and node.next:
+            self.lru = node.next
+            self.lru.prev = None
+        # node not head of linked list (lru) or tail (has next)
+        elif node.next:
+            # extract node from list
+            node.next.prev = node.prev
+            node.prev.next = node.next
+        # node is not already most recently used (end of linked list)
+        if node != self.mru:
+            # attach node to end of linked list
+            self.mru.next = node
+            node.prev = self.mru
+            # update reference to most recently used node
+            self.mru = node
+            # make node new tail of list
+            node.next = None
+
+    #Function for storing key-value pair.   
+    def set(self, key, value):
+        # first node to be inserted into cache
+        if not self.mru:
+            node = Node(key, value)
+            # store first new node in dict
+            self.dict[key] = node
+            # set head and tail of linked list to first node
+            self.lru = node
+            self.mru = node
+            # adjust remaining capacity
+            self.cap -= 1
+            # this section only used for first call to set(), rest of method not needed
+            return
+        
+        # node already in cache
+        if key in self.dict:
+            # retrieve node
+            node = self.dict[key]
+            # update with new value
+            node.value = value
+            # call method to "use" node, updating linked list order
+            self.use(node)
+        
+        # node not found in cache
+        else:
+            # construct new node
+            node = Node(key, value)
+            # add to dict for fast lookup
+            self.dict[key] = node
+            # attach node to end of linked list
+            self.mru.next = node
+            node.prev = self.mru
+            # update reference to most recently used node
+            self.mru = node
+            # cache capacity not yet filled
+            if self.cap:
+                self.cap -= 1
+            # cache full
+            else:
+                # remove least recently used node from dict
+                self.dict.pop(self.lru.key)
+                # second least recently used node is new lru
+                self.lru = self.lru.next
+                self.lru.prev = None
