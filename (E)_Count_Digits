@@ -1,0 +1,25 @@
+"""
+Python solution for Count Digits problem at https://www.geeksforgeeks.org/problems/count-digits5716/1
+difficulty: easy
+input is an integer, N
+goal is to determine how many digits of N evenly divide N
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    def evenlyDivides (self, N):
+        # copy N to separate digits
+        nCopy = N
+        # initialize return variable
+        result = 0
+        # loop through digits of copy
+        while nCopy > 0:
+            # mod 10 for last digit
+            digit = nCopy % 10
+            # N is divisible by last digit
+            if digit != 0 and N % digit == 0:
+                result += 1
+            # integer division to trim off final digit
+            nCopy = nCopy // 10
+        # number of digits which evenly divide N found
+        return result
