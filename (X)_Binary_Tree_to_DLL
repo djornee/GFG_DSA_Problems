@@ -1,0 +1,39 @@
+"""
+Python solution for Binary Tree to DLL problem at https://www.geeksforgeeks.org/problems/binary-tree-to-dll/1
+difficulty: hard
+input is the root node of a binary tree (node attributes are "left", "right", and "data")
+goal is to do an in-place conversion of the tree to a doubly linked list,
+following inorder traversal of tree, returning the head node of the list
+"""
+
+#Function to convert a binary tree to doubly linked list.
+class Solution:
+    def bToDLL(self,root):
+        # initialize variables for the head and tail nodes that can be passed in recursive function calls
+        head = []
+        tail = []
+        # recursive function for inorder tree traversal
+        def inorder(node, head, tail):
+            # revursively visit left node first
+            if node.left:
+                inorder(node.left, head, tail)
+            # current node is first in inorder traversal
+            if not head:
+                # start list with head and tail both pointing to first node
+                head.append(node)
+                tail.append(node)
+            # current node is not first
+            else:
+                # doubly link current node to tail of list
+                tail[0].right = node
+                node.left = tail[0]
+                # update tail reference to new list tail
+                tail[0] = node
+            # recursively visit right node last
+            if node.right:
+                inorder(node.right, head, tail)
+        
+        # begin recursive function calls
+        inorder(root, head, tail)
+        # tree converted to doubly linked list, return head node
+        return head[0]
