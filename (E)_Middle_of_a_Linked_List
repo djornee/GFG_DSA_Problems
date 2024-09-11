@@ -1,0 +1,35 @@
+"""
+Python solution for Middle of a Linked List problem at https://www.geeksforgeeks.org/problems/finding-middle-element-in-a-linked-list/1
+difficulty: easy
+input is the head node of a linked list (node attributes are "data" and "next")
+goal is to return the data of the middle node of the list (if even number of nodes, the second middle)
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    #  Should return data of middle node. If linked list is empty, then  -1
+    def findMid(self, head):
+        # linked list is empty
+        if not head:
+            return -1
+        # linked list is just head node, return it
+        if not head.next:
+            return head.data
+        # linked list has just two nodes, return node 2
+        if not head.next.next:
+            return head.next.data
+        # initialize two variables to traverse list, one that will travel twice as fast
+        slow = head.next
+        fast = slow.next
+        # traverse list until fast reaches the end
+        while fast.next and fast.next.next:
+            # slow moves forward one node
+            slow = slow.next
+            # fast moves forward two nodes
+            fast = fast.next.next
+        # there's one extra node at end of list (even number of nodes)
+        if fast.next:
+            # slow moves forward one more to reach second middle node
+            slow = slow.next
+        # (second) middle of list found
+        return slow.data
