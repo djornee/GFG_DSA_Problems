@@ -1,3 +1,5 @@
+vim: syntax=python
+
 """
 Python solution for Sorted Array Search problem at https://www.geeksforgeeks.org/problems/who-will-win-1587115621/1
 difficulty: basic
