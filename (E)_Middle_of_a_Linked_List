@@ -1,3 +1,5 @@
+vim: syntax=python
+
 """
 Python solution for Middle of a Linked List problem at https://www.geeksforgeeks.org/problems/finding-middle-element-in-a-linked-list/1
 difficulty: easy
