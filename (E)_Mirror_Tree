@@ -1,0 +1,30 @@
+"""
+Python solution for Mirror Tree problem at https://www.geeksforgeeks.org/problems/mirror-tree/1
+difficulty: easy
+input is the root node of a binary tree (node attributes are "left", "right", and "data")
+goal is to convert the tree into its mirror
+"""
+
+class Solution:
+    #Function to convert a binary tree into its mirror tree.
+    def mirror(self, root):
+        # recursive function that swaps left/right children
+        def flip(node):
+            # node is None--off edge of tree
+            if not node:
+                return
+            
+            # swap left and right children of current node
+            temp = node.left
+            node.left = node.right
+            node.right = temp
+            
+            # recursively visit left child
+            flip(node.left)
+            # recursively visit right child
+            flip(node.right)
+        
+        # begin recursive function calls        
+        flip(root)
+        # tree mirror conversion complete
+        return root
