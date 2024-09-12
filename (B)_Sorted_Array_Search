@@ -1,0 +1,32 @@
+"""
+Python solution for Sorted Array Search problem at https://www.geeksforgeeks.org/problems/who-will-win-1587115621/1
+difficulty: basic
+input is a list of integers, arr, the length of the list, K, and an integer to search for, K
+input is to return 1 if K is present in arr, otherwise -1
+"""
+
+class Solution:
+    # binary search function
+    def searchInSorted(self, arr, N, K):
+        # initialize left index, first element of list
+        l = 0
+        # initialize right index, last element of list
+        r = N - 1
+        # initialize middle index, average of l and r
+        m = (l + r) // 2
+        # begin binary search, repeating until l and r meet
+        while l <= r:
+            # K found, return 1
+            if arr[m] == K:
+                return 1
+            # middle is less than K, ignore left half of list
+            if arr[m] < K:
+                l = m + 1
+            # middle is greater than K, ignore right half of list
+            else:
+                r = m - 1
+            # reset m to average of l and r
+            m = (r + l) // 2
+        
+        # K not found, return -1
+        return -1
