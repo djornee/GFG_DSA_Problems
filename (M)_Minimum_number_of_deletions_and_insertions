@@ -19,14 +19,14 @@ class Solution:
 		            # first row, column of matrix all remain 0s
 		            if i == 0 or j == 0:
 		                continue
-								# checked characters in strings match
-								elif str1[i - 1] == str2[j - 1]:
-										# add one to length of lcs for these characters
-										matrix[i][j] = matrix[i - 1][j - 1] + 1
-								# checked characters don't match
-								else:
-										# carry forward adjacent value
-										matrix[i][j] = max(matrix[i - 1][j], matrix[i][j - 1])
+                    # checked characters in strings match
+                    elif str1[i - 1] == str2[j - 1]:
+                        # add one to length of lcs for these characters
+                        matrix[i][j] = matrix[i - 1][j - 1] + 1
+                    # checked characters don't match
+                    else:
+                        # carry forward adjacent value
+                        matrix[i][j] = max(matrix[i - 1][j], matrix[i][j - 1])
             # return length of lcs from final cell of matrix
             return matrix[len(str1)][len(str2)]
         
