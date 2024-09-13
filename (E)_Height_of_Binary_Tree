@@ -1,0 +1,22 @@
+vim: syntax=python
+
+"""
+Python solution for Height of Binary Tree problem at https://www.geeksforgeeks.org/problems/height-of-binary-tree/1
+difficulty: easy
+input is root node of a binary tree (nodes have properties data, left, right)
+goal is to return the height of the tree
+time complexity and auxiliary space are both O(n)
+"""
+
+class Solution:
+    def height(self, root):
+        # recursive function to find height of tree
+        def getHeight(node):
+            # passed edge of tree (node is None)
+            if not node:
+                return 0
+            # recursive call, adds one to maximum height of left and right subtrees to get current node height
+            return 1 + max(getHeight(node.left), getHeight(node.right))
+        
+        # return result of above recursive function    
+        return getHeight(root)
