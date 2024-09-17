@@ -1,0 +1,51 @@
+vim: syntax=python
+
+"""
+Python solution for Parenthesis Checker problem at https://www.geeksforgeeks.org/problems/parenthesis-checker2744/1
+difficulty: easy
+input is a string of bracket/parenthesis characters
+goal is to return true if the pairs and orders of the opening/closing brackets/parentheses are correct, otherwise false
+"""
+
+class Solution:
+    
+    # repeatedly finds first, innermost opening/closing pair and removes it from the string
+    def ispar(self, x):
+        # start at beginning of string
+        i = 0
+        # traverse string characters
+        while i < len(x):
+            # closing bracket or parenthesis found
+            if x[i] == "}" or x[i] == ")" or x[i] == "]":
+                # closing bracket or parenthesis is at beginning of string, not balanced
+                if i == 0:
+                    return False
+                # character before closing bracket or parenthesis isn't matching opening character, not balanced
+                if x[i] == "}" and x[i-1] != "{":
+                    return False
+                if x[i] == ")" and x[i-1] != "(":
+                    return False
+                if x[i] == "]" and x[i-1] != "[":
+                    return False
+                
+                # correct opening/closing pair found
+                # and it's at end of string
+                if i == len(x) - 1:
+                    # remove last two characters of string
+                    x = x[:-2]
+                    # reset to beginning of string to start again
+                    i = 0
+                # pair isn't at end of string
+                else:
+                    # slice current and previous character out of string
+                    x = x[:(i-1)] + x[(i+1):]
+                    # reset to beginning of string to start again
+                    i = 0
+            # current character isn't a closing bracket or parenthesis, continue to next
+            else:
+                i += 1
+        # after finding and removing all balanced pairs, there are still characters remaining in x
+        if x:
+            return False
+        else:
+            return True
