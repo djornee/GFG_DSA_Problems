@@ -1,0 +1,38 @@
+vim: syntax=python
+
+"""
+Python solution for Longest valid Parentheses problem at https://www.geeksforgeeks.org/problems/longest-valid-parentheses5657/1
+difficulty: hard
+input is a string of characters, either '(' or ')'
+goal is to return the length of the longest substring of valid parentheses
+"""
+
+class Solution:
+    def maxLength(self, str):
+        n = len(str)
+        # create list to store number of extra valid characters that can be added
+        extra = [0] * n
+        # initialze return variable and stack
+        result = 0
+        stack = []
+        # start at beginning of string
+        i = 0
+        # loop through string characters
+        for i in range(n):
+            # open parenthesis, push index onto stack
+            if str[i] == "(":
+                stack.append(i)
+            # character is close parenthesis and is part of valid substring
+            elif stack:
+                # get index of matching open parenthesis
+                last = stack.pop()
+                # store length of valid substring ending at i
+                extra[i] = i - last + 1
+                # current valid substring is not at the beginning of str
+                if last > 0:
+                    # if there are extra valid characters before current valid substring, add them to total for i
+                    extra[i] += extra[last - 1]
+                # update result if new maximum found
+                result = max(result, extra[i])
+        # length of longest valid substring found
+        return result
