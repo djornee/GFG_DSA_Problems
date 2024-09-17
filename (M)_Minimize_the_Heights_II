@@ -1,0 +1,39 @@
+vim: syntax=python
+
+"""
+Python solution for Minimize the Heights II problem at https://www.geeksforgeeks.org/problems/minimize-the-heights3351/1
+difficulty: medium
+inputs are a list of tower heights, arr, and a positive integer k
+goal is to return the minimum possible difference between the height of the shortest and tallest towers after
+having either added or subtracted k to/from each
+"""
+
+class Solution:
+    def getMinDiff(self, arr, k):
+        # ensure list is sorted
+        arr.sort()
+        # baseline result, which you could get from adding k to every tower
+        result = arr[-1] - arr[0]
+        # shortest tower can never be taller than first tower + k
+        bareMin = arr[0] + k
+        # tallest tower can never be shorter than last tower - k
+        lowestMax = arr[-1] - k
+        # initialize variables
+        minimum = 0
+        maximum = 0
+        
+        # loop through towers (skipping the first), and try decreasing heights of all towers >= current
+        # and increasing heights of all others to see if that creates the minimum possible difference
+        for i in range(1, len(arr)):
+            # tower height can't be decreased, skip to next
+            if arr[i] < k:
+                continue
+            # check if current tower can be the minimum height
+            minimum = min(bareMin, arr[i] - k)
+            # check if previous tower can be the maximum height
+            maximum = max(lowestMax, arr[i - 1] + k)
+            # update result if new minimum found
+            result = min(result, maximum - minimum)
+        
+        # minimum possible difference found
+        return result
