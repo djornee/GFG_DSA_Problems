@@ -1,0 +1,22 @@
+vim: syntax=python
+
+"""
+Python solution for Missing number in shuffled array problem at https://www.geeksforgeeks.org/problems/missing-number-in-shuffled-array0938/1
+difficulty: basic
+input is two lists of integers, arr2 is a shuffled version of arr1 that is missing one of the elements
+goal is to return the element of arr1 that is missing from arr2
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    # sorts each list, then loops through the elements to find the one from arr1 that isn't in arr2
+    def findMissing(self, arr1, arr2):
+        arr1.sort()
+        arr2.sort()
+        # uses length of arr2 as the range for the loop to avoid index out of bounds error
+        for i in range(len(arr2)):
+            # found missing element, return it from arr1
+            if arr1[i] != arr2[i]:
+                return arr1[i]
+        # all n elements of arr2 were the first n elements of arr1, so return the final element
+        return arr1[-1]
