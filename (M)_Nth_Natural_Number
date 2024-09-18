@@ -1,0 +1,23 @@
+vim: syntax=python
+
+"""
+Python solution for Nth Natural Number at https://www.geeksforgeeks.org/problems/nth-natural-number/1
+difficulty: medium
+input is an integer, n
+goal is to return the nth natural number that doesn't contain the digit 9
+"""
+
+class Solution:
+    # returns base 9 version of n
+    def findNth(self, n):
+        # initalize return variable
+        result = 0
+        # initialize counter for places (1s, 10s, 100s, etc.)
+        digit = 1
+        # loop through input, converting to base 9
+        while n > 0:
+            result += digit * (n % 9)
+            n = n // 9
+            digit *= 10
+        # base 9 version of n, read as a base 10 number, should be the correct answer
+        return result
