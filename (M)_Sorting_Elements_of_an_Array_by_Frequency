@@ -1,0 +1,55 @@
+vim: syntax=python
+
+"""
+Python solution for Sorting Elements of an Array by Frequency problem at https://www.geeksforgeeks.org/problems/sorting-elements-of-an-array-by-frequency-1587115621/1
+difficulty: medium
+input is a list of integers (>= 1)
+goal is to return a list of the same integers sorted descending by frequency and then ascending by value (if equal frequency)
+"""
+
+# import to use custom comparator function as sort key
+from functools import cmp_to_key
+
+class Solution:
+   
+    def sortByFreq(self, arr):
+        # initialize dictionary to store frequencies
+        frequencies = {}
+        # loop through list and add to or update dict (key = integer list element, value = frequency)
+        for i in arr:
+            # integer key already in dict
+            if i in frequencies:
+                frequencies[i] += 1
+            # integer key not yet in dict
+            else:
+                frequencies[i] = 1
+        
+        # custom comparator to sort by frequency, descending, followed by value, ascending
+        def compFunc(a, b):
+            # a frequency < b, sorted after
+            if a[1] < b[1]:
+                return 1
+            # a frequency > b, sorted before
+            elif a[1] > b[1]:
+                return -1
+            # equal frequency, a > b, sorted after
+            elif a[0] > b[0]:
+                return 1
+            # equal frequency, a < b, sorted before
+            elif a[0] < b[0]:
+                return -1
+            # equal frequency and equal value, should never happen, but default to 0
+            else:
+                return 0
+        
+        # convert dict to list of (key, value) tuples
+        freqList = [(k, v) for k, v in frequencies.items()]
+        # sort frequency list using custom comparator function
+        freqList = sorted(freqList, key = cmp_to_key(compFunc))
+        
+        # initialize return variable as empty list
+        result = []
+        # use sorted frequency list to populate result with lists of [key/integer] * value/frequency
+        for i in freqList:
+            result.extend([i[0]] * i[1])
+        return result
