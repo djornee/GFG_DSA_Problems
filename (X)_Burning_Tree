@@ -32,7 +32,8 @@ class Solution:
             if node.burnTime != -1:
                 return 1 + node.burnTime
             # node not in path to root
-            else: return -1
+            else:
+                return -1
         
         rootTime(root, target)
 
