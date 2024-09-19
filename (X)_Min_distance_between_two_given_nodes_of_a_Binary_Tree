@@ -1,0 +1,69 @@
+vim: syntax=python
+
+"""
+Python solution for Min distance between two given nodes of a Binary Tree problem at https://www.geeksforgeeks.org/problems/min-distance-between-two-given-nodes-of-a-binary-tree/1
+difficulty: hard
+inputs are the root node of a binary tree (Node attributes are "data", "left", and "right") and the value of two of the tree's nodes (node data is distinct)
+goal is to find the minimum distance between the two nodes (distance between parent and child nodes is 1) traveling along the tree
+"""
+
+class Solution:
+    def findDist(self,root,a,b):
+        # initialize return variable that can be passed to a recursive function
+        result = [0]
+        
+        # part one of solution finds distance between node a and the root
+        # adds steps attribute to nodes encountered
+        def rootSteps(node, a):
+            # off edge of tree
+            if not node:
+                return -1
+            
+            # found node a, begin returning distance (steps)
+            if node.data == a:
+                node.steps = 0
+                return 1
+            
+            # recursively search and populate steps
+            node.steps = max(rootSteps(node.left, a), rootSteps(node.right, a))
+            
+            # node is in path to root
+            if node.steps != -1:
+                return 1 + node.steps
+            # node not in path to root    
+            else:
+                return -1
+        
+        # begin recursive function calls for solution part one        
+        rootSteps(root, a)
+        
+        # part two of solution increments steps as it searches for node b
+        def bSteps(node, b, steps, result):
+            # node b found, store result and return
+            if node.data == b:
+                result[0] = steps
+                return
+            
+            # recursively search left subtree
+            if node.left:
+                # use distance (steps) already calculated
+                if hasattr(node.left, "steps") and node.left.steps != -1:
+                    bSteps(node.left, b, node.left.steps, result)
+                # use distance (steps) of current node, +1 for next node
+                else:
+                    bSteps(node.left, b, steps + 1, result)
+            
+            #recursively search right subtree
+            if node.right:
+                # use distance (steps) already calculated
+                if hasattr(node.right, "steps") and node.right.steps != -1:
+                    bSteps(node.right, b, node.right.steps, result)
+                # use distance (steps) of current node, +1 for next node
+                else:
+                    bSteps(node.right, b, steps + 1, result)
+        
+        # begin recursive function calls for solution part two, beginning with distance (steps) already found for root            
+        bSteps(root, b, root.steps, result)
+        
+        # minimum distance to b found
+        return result[0]
