@@ -1,0 +1,20 @@
+vim: syntax=python
+
+"""
+Python solution for Sum of Series problem at https://www.geeksforgeeks.org/problems/sum-of-series2811/1
+difficulty: basic
+input is an integer, n
+goal is to return the sum of the series (1 + 2 + 3 + ... n)
+time complexity and auxiliary space are O(1)
+"""
+class Solution:
+    # finds average and multiplies by number of terms
+    def seriesSum(self, n : int) -> int:
+        # integer division to avoid using floats, prevents overflow issues
+        roundAverage = (n + 1) // 2
+        # if n is odd, the average of the terms would be a round number
+        if n % 2 == 1:
+            return roundAverage * n
+        # n is even, so the average would be roundAverage + 0.5
+        # returns roundAverage * n + 0.5 * n, but again using integer division to avoid floats
+        return (roundAverage * n) + (n // 2)
