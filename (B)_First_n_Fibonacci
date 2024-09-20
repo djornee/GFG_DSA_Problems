@@ -1,0 +1,28 @@
+vim: syntax=python
+
+"""
+Python solution for First n Fibonacci problem at https://www.geeksforgeeks.org/problems/print-first-n-fibonacci-numbers1002/1
+difficulty: basic
+input is a positive integer, n
+goal is to return a list of the first n numbers of the Fibonacci sequence
+time complexity and auxiliary space are both O(n)
+"""
+
+class Solution:
+    #Function to return list containing first n fibonacci numbers.
+    def printFibb(self, n):
+        # initialize return variable with first fibonacci number
+        result = [1]
+        # only first term needed, return
+        if n == 1:
+            return result
+        # subtract 2 from n and add the second number to the list
+        n -= 2
+        result.append(1)
+        # loop until n reaches 0
+        while n > 0:
+            # subtract 1 for each pass through the loop
+            n -= 1
+            # append the sum of the last two numbers in the list
+            result.append(result[-1] + result[-2])
+        return result
