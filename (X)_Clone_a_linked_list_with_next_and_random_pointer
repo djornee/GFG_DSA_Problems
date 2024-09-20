@@ -1,0 +1,53 @@
+vim: syntax=python
+
+"""
+Python solution for Clone a linked llist with next and random pointer problem at https://www.geeksforgeeks.org/problems/clone-a-linked-list-with-next-and-random-pointer/1
+difficulty: hard
+input is the head node of a linked list (node attributes are "data", "next", and "random")
+goal is to create a copy of the list, new nodes with the same data and pointers, and return the head of the new list
+"""
+
+class Solution:
+    #Function to clone a linked list with next and random pointer.
+    def copyList(self, head):
+        # first list traversal creates a copy of each node
+        currNode = head
+        # continue until currNode is None
+        while currNode:
+            # create node with same data as currNode
+            newNode = Node(currNode.data)
+            # insert new node into list after currNode
+            newNode.next = currNode.next
+            currNode.next = newNode
+            # continue to next node in input list
+            currNode = newNode.next
+        
+        # second list traversal copies random pointers
+        currNode = head
+        while currNode:
+            # currNode has a random pointer
+            if currNode.random:
+                # add to copy of currNode, pointer to copy of currNode's random node
+                currNode.next.random = currNode.random.next
+            # continue to next node in input list (skipping copy of currNode)
+            currNode = currNode.next.next
+        
+        # third list traversal untangles lists
+        currNode = head
+        # keep reference to head of list copy
+        newHead = currNode.next
+        newNode = newHead
+        while newNode.next:
+            # reset next pointer for input list node
+            currNode.next = currNode.next.next
+            # set correct next pointer for copy node
+            newNode.next = newNode.next.next
+            # continue to next nodes in lists
+            currNode = currNode.next
+            newNode = newNode.next
+        
+        # reset next pointer for input list's final node to None   
+        currNode.next = None
+        
+        # list has been fully copied, and copy has been unlinked from input list
+        return newHead
