@@ -1,0 +1,89 @@
+vim: syntax=python
+
+"""
+Python solution for Smallest window in a string containing all the characters of another string problem at https://www.geeksforgeeks.org/problems/smallest-window-in-a-string-containing-all-the-characters-of-another-string-1587115621/1
+difficulty: hard
+input is two strings, s and p
+goal is to return the shortest substring of s that contains all of the characters of p
+time complexity is O(n), auxiliary space is O(1) (since characters are all lowercase alpha, dict data structure used is at most 26 key/value pairs)
+
+solution starts with creating a dict where the keys are unique characters of p and the values are the number of instances
+of each character in p, then loops through s forming the substring between left and right index pointers, adjusting
+the number of instances of each of p's characters (including accounting for extra instances with negative numbers)
+contained in the substring, decreasing substring length when it is a valid solution or increasing it when at least
+one character from p is missing, and saves the first shortest valid substring solution
+"""
+
+class Solution:
+    
+    # Function to find the smallest window in the string s consisting
+    # of all the characters of string p.
+    def smallestWindow(self, s, p):
+        # dict to store p's characters as keys and number of instances as values
+        pDict = {}
+        # loop through characters of p
+        for ch in p:
+            # character not yet encountered, add to dict
+            if ch not in pDict:
+                pDict[ch] = 1
+            # additional instance of character, increment value
+            else:
+                pDict[ch] += 1
+        
+        # initialize left and right index pointers
+        l = 0
+        r = 0
+        # initialize return variable
+        result = False
+        # loop until right index reaches end of s
+        while r < len(s):
+            # character at r is in p
+            if s[r] in pDict:
+                # decrement number of instances needed for valid substring solution
+                pDict[s[r]] -= 1
+                # no additional of these characters are needed for a valid substring solution
+                if pDict[s[r]] <= 0:
+                    # set a flag for checking all characters in p
+                    flag = True
+                    # loop through characters in p (dict keys)
+                    for key in pDict.keys():
+                        # at least one character in p needs additional instance(s) in the substring
+                        if pDict[key] >= 1:
+                            # change flag and break out of for loop
+                            flag = False
+                            break
+                    
+                    # valid substring solution found
+                    if flag:
+                        # first solution or new shortest solution
+                        if not result or (r - l + 1) < len(result):
+                            # set result to current substring
+                            result = s[l:r + 1]
+                        
+                        # loop until left index meets right
+                        while l <= r:
+                            # new shortest solution found
+                            if (r - l + 1) < len(result):
+                                result = s[l:r + 1]
+                            # removing a character of p from substring
+                            if s[l] in pDict:
+                                # increment number of instances needed for valid substring solution
+                                pDict[s[l]] += 1
+                                # substring is no longer a valid solution
+                                if pDict[s[l]] > 0:
+                                    l += 1
+                                    break
+                            # removing left index's character doesn't stop substring from being a valid solution,
+                            # increment l and continue checking
+                            l += 1
+            
+            # adding right index's character didn't turn substring into a valid solution,
+            # increment r and continue checking
+            r += 1
+        
+        # finished looping through s without finding a valid substring solution (result is still False)
+        if not result:
+            return -1
+        
+        # shortest valid substring solution found
+        return result
