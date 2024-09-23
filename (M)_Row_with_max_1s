@@ -1,0 +1,22 @@
+vim: syntax=python
+
+"""
+Python solution for Row with max 1s problem at https://www.geeksforgeeks.org/problems/row-with-max-1s0023/1
+difficulty: medium
+input is a matrix / 2D array consisting of rows of 1s and 0s, each row sorted in ascending order
+goal is to return the number (0-based indexing) of the first row that has the most 1s, or -1 if there is none
+"""
+
+class Solution:
+    # since each row is sorted, the first column that contains a 1 will be the row that has the most 1s
+    # and the top row that has a 1 in that column will be the first row that has the most 1s
+    def rowWithMax1s(self, arr):
+        # loop through arr starting with first column
+        for j in range(len(arr[0])):
+            # go down each row in each column
+            for i in range(len(arr)):
+                # first 1 encountered checking in this order is the first row that has the most 1s
+                if arr[i][j] == 1:
+                    return i
+        # arr contains only 0s
+        return -1
