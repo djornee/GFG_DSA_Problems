@@ -1,0 +1,25 @@
+vim: syntax=python
+
+"""
+Python solution for Implement stack using array problem at https://www.geeksforgeeks.org/problems/implement-stack-using-array/1
+difficulty: basic
+goal is to implement methods push to add an element to the stack and pop to remove and return the top stack element, or -1 if empty
+"""
+
+class MyStack:
+    
+    def __init__(self):
+        self.arr = []
+    
+    #Function to push an integer into the stack.
+    def push(self, data):
+        # add data to end of arr
+        self.arr.append(data)
+    
+    #Function to remove an item from top of the stack.
+    def pop(self):
+        # arr is empty
+        if not self.arr:
+            return -1
+        # remove and return last element of arr
+        return self.arr.pop()
