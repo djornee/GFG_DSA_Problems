@@ -1,0 +1,27 @@
+vim: syntax=python
+
+"""
+Python solution for Print 1 To N Without Loop problem at https://www.geeksforgeeks.org/problems/print-1-to-n-without-using-loops-1587115620/1
+difficulty: basic
+input is a positive integer, N
+goal is to print numbers from 1 to N recursively
+time complexity is O(n), space complexity is O(1) or O(n) if you count the recursive stack
+"""
+
+class Solution:
+    
+    def printNos(self, N):
+        # recursive function to print numbers from 1 to n
+        def recursivePrint(n):
+            # end recursive calls at 1
+            if n == 1:
+                # print 1 followed by a space instead of newline
+                print(n, end = " ")
+                return
+            # recursively print 1 less than n
+            recursivePrint(n - 1)
+            # after recursive prints, print n
+            print(n, end = " ")
+        
+        # begin recursive function call
+        recursivePrint(N)
