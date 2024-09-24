@@ -1,0 +1,65 @@
+vim: syntax=python
+
+"""
+Python solution for Palindrome Linked List problem at https://www.geeksforgeeks.org/problems/check-if-linked-list-is-pallindrome/1
+difficulty: medium
+input is the head node of a linked list (node attributes are "data" and "next")
+goal is to return True if the linked list is a palindrome, otherwise False
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    #Function to check whether the list is palindrome.
+    def isPalindrome(self, head):
+        # list only contains head node, so it is a palindrome
+        if not head.next:
+            return True
+        
+        # initialize pointer for middle node of list
+        mid = head.next
+        # list only contains two nodes
+        if not mid.next:
+            # both nodes have same data, so list is a palindrome
+            if mid.data == head.data:
+                return True
+            # the two nodes have different data, so list is not a palindrome
+            else:
+                return False
+        
+        # initialize pointer for end node of list
+        end = mid.next
+        # loop until end pointer reaches end of list and mid pointer is at the middle node
+        while end.next and end.next.next:
+            mid = mid.next
+            end = end.next.next
+        # there's one extra node at end of list after looping
+        if end.next:
+            end = end.next
+        
+        # initialize variables to swap order of second half of list
+        currNode = mid.next
+        nextNode = currNode.next
+        # currNode will be the tail of the second half of list
+        currNode.next = None
+        # loop through remainder of list
+        while nextNode != None:
+            # swap direction of next pointers
+            temp = nextNode.next
+            nextNode.next = currNode
+            # advance to next two nodes
+            currNode = nextNode
+            nextNode = temp
+        
+        # loop through reversed second half of list
+        while end:
+            # compare data between first half of list and reversed second half of list
+            if head.data != end.data:
+                # data mismatch means list is not a palindrome
+                return False
+            # advance to next node in each half of list
+            head = head.next
+            end = end.next
+        
+        # checked data in reversed second half of list against data in first half of list
+        # no data mismatches means list is a palindrome
+        return True
