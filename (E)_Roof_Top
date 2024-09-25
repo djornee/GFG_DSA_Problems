@@ -1,0 +1,33 @@
+vim: syntax=python
+
+"""
+Python solution for Roof Top problem at https://www.geeksforgeeks.org/problems/roof-top-1587115621/1
+difficulty: easy
+input is a list, arr, of heights of consecutive building
+goal is to return the length of the longest subsequence of strictly increasing heights
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    
+    #Function to find maximum number of consecutive steps 
+    #to gain an increase in altitude with each step.
+    def maxStep(self, arr):
+        # initialize return variable
+        maxSoFar = 0
+        # initialize variable for length of current sequence of increasing heights
+        maxHere = 0
+        # loop through input list
+        for i in range(len(arr) - 1):
+            # compare height of current and next buildings
+            if arr[i] < arr[i + 1]:
+                # next step will be an increase, increment length of current sequence
+                maxHere += 1
+                # check for a new maximum
+                maxSoFar = max(maxSoFar, maxHere)
+            else:
+                # next step will be either equal or a decrease, reset length of current sequence to 0 
+                maxHere = 0
+        
+        # longest subsequence found, return
+        return maxSoFar
