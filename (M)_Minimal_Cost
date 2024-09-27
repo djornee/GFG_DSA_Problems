@@ -1,0 +1,34 @@
+vim: syntax=python
+
+"""
+Python solution for Minimal Cost problem at https://www.geeksforgeeks.org/problems/minimal-cost/1
+difficulty: medium
+input is a list of heights of stones, arr, and an integer denoting the maximum number of steps that can be taken at once, k
+goal is to calculate the minimum possible total cost it takes to reach the last stone (cost for a step is the difference between their heights)
+time complexity is O(n * k), auxiliary space is O(n)
+"""
+
+class Solution:
+    def minimizeCost(self, k, arr):
+        # initialize list of minimum costs to reach each step
+        costs = [0] * len(arr)
+        
+        # cost at step 0 will stay 0, so loop through remaining steps and populate costs
+        for i in range(1, len(arr)):
+            # start at previous step
+            j = i - 1
+            # cost to reach previous step + difference in heights between current and previous steps
+            minCost = costs[j] + abs(arr[i] - arr[j])
+            # move j one step further back
+            j -= 1
+            # loop until j reaches step 0 or k steps before current step, whichever comes first
+            while j >= 0 and j >= i - k:
+                # check for new minimum cost
+                minCost = min(minCost, costs[j] + abs(arr[i] - arr[j]))
+                # move j one step further back
+                j -= 1
+            # set minimum cost to reach current step
+            costs[i] = minCost
+        
+        # minimum cost to last stone calculated
+        return costs[-1]
