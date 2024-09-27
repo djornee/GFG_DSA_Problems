@@ -1,0 +1,43 @@
+vim: syntax=python
+
+"""
+Python solution for K Sized Subarray Maximum problem at https://www.geeksforgeeks.org/problems/maximum-of-all-subarrays-of-size-k3101/1
+difficulty: medium
+input is a list of non-negative integers, arr, and a positive integer, k
+goal is to return a list of the maximum element of each contiguous subarray of arr of size k
+time complexity is O(n), auxiliary space is O(k)
+"""
+
+class Solution:
+    
+    #Function to find maximum of each subarray of size k.
+    def max_of_subarrays(self, k, arr):
+        # initialize list of indexes of local maximums
+        localMaxs = []
+        # loop through first k elements of arr
+        for i in range(k):
+            # current element of arr >= arr element of final index of localMaxs
+            while localMaxs and arr[i] >= arr[localMaxs[-1]]:
+                # final index of localMaxs won't ever be a local maximum
+                localMaxs.pop(-1)
+            # store current index in localMaxs
+            localMaxs.append(i)
+        # for first subarray of size k, the first index in localMaxs is the maximum element
+        result = [arr[localMaxs[0]]]
+        
+        # loop through remaining elements of arr
+        for i in range(k, len(arr)):
+            # current element of arr >= arr element of final index of localMaxs
+            while localMaxs and arr[i] >= arr[localMaxs[-1]]:
+                # final index of localMaxs won't be a local maximum from this point on
+                localMaxs.pop(-1)
+            # store current index in localMaxs
+            localMaxs.append(i)
+            # check if first index in localMaxs is outside the current k-sized subarray
+            if i - k >= localMaxs[0]:
+                localMaxs.pop(0)
+            # for current k-sized subarray, the first index in localMaxs is the maximum element
+            result.append(arr[localMaxs[0]])
+        
+        # result list populated with all subarray maximums
+        return result
