@@ -1,0 +1,27 @@
+vim: syntax=python
+
+"""
+Python solution for Rotate and delete problem at https://www.geeksforgeeks.org/problems/rotate-and-delete-1587115621/1
+difficulty: medium
+input is a list of integers, arr
+goal is to perform this operation k times, until one element is left: rotate list clockwise 1 and delete kth element from the last
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    def rotateDelete(self,  arr):
+        # list only contains one element, no operations needed
+        if len(arr) == 1:
+            return arr[0]
+        # initialize k, using negative indexing
+        k = -1
+        # loop until there are fewer elements left in the list than k
+        while abs(k) <= len(arr):
+            # rotate list clockwise once
+            arr.insert(0, arr.pop())
+            # remove kth from the last element
+            arr.pop(k)
+            # increment (decrement) k
+            k -= 1
+        # once k > len(arr), further operations will always leave the first element of the list the same
+        return arr[0]
