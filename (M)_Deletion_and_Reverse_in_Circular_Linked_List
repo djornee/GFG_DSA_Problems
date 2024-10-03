@@ -1,0 +1,75 @@
+vim: syntax=python
+
+"""
+Python solution for Deletion and Reverse in Circular Linked List problem at https://www.geeksforgeeks.org/problems/deletion-and-reverse-in-linked-list/1
+difficulty: medium
+input is the head node of a circular linked list (Node attributes are "data" and "next")
+goal is to define functions that reverse the linked list and delete a node from it
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    # Function to reverse a circular linked list
+    def reverse(self, head):
+        # list only contains head node, reversing does nothing
+        if head.next == head:
+            return head
+        # list only contains two nodes, reversing just means second node is new head
+        if head.next.next == head:
+            return head.next
+        # initialize two pointers
+        currNode = head
+        nextNode = head.next
+        # loop through list, reversing link order
+        while nextNode != head:
+            # save next node to move to
+            temp = nextNode.next
+            # repoint nextNode to currNode
+            nextNode.next = currNode
+            # advance to next two nodes
+            currNode = nextNode
+            nextNode = temp
+        # after looping, head is the new tail and currNode is the new head, so close circle by pointing tail to head
+        head.next = currNode
+        # return new head of list
+        return currNode
+        
+    # Function to delete a node from the circular linked list
+    def deleteNode(self, head, key):
+        # deleting head node of list
+        if head.data == key:
+            # list only contained head and is now empty
+            if not head.next:
+                return None
+            # keep reference to new head node
+            newHead = head.next
+            # list only contained two nodes
+            if newHead.next == head:
+                # close circly by pointing newHead to itself
+                newHead.next = newHead
+                return newHead
+            
+            # list contained >2 nodes
+            nextNode = newHead.next
+            # loop to tail node of list
+            while nextNode.next != head:
+                nextNode = nextNode.next
+            # point tail node to new head node
+            nextNode.next = newHead
+            return newHead
+        
+        # deleting a node other than head, initialize two pointers
+        currNode = head
+        nextNode = head.next
+        # loop until finding a node that matches key
+        while nextNode.data != key:
+            currNode = nextNode
+            nextNode = nextNode.next
+            # looped back to beginning of list without finding matching node
+            if nextNode == head:
+                # no deletion to be done, return head of unchanged list
+                return head
+        # delete nextNode from the list by pointing currNode to the node after nextNode
+        currNode.next = nextNode.next
+        # deletion done
+        return head
