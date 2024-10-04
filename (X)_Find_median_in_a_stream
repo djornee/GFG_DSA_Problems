@@ -1,0 +1,99 @@
+vim: syntax=python
+
+"""
+Python solution for Find median in a stream problem at https://www.geeksforgeeks.org/problems/find-median-in-a-stream-1587115620/1
+input is a stream of integers
+goal is to insert each one into a set of two heaps to allow for quickly finding the median after each insertion
+"""
+
+''' 
+use globals min_heap and max_heap, as per declared in driver code
+use heapify modules, already imported by driver code
+'''
+
+# initialize global heaps
+global max_heap
+global min_heap
+max_heap = []
+min_heap = []
+heapq.heapify(max_heap)
+heapq.heapify(min_heap)
+
+# abstract methods from heapq library to allow for cleaner code below for both max and min heaps
+# max heap is still really a min heap, but it stores the negative of each value
+def maxPush(x):
+    global max_heap
+    heapq.heappush(max_heap, -x)
+    
+def maxPop():
+    global max_heap
+    return -heapq.heappop(max_heap)
+    
+def maxPeek():
+    global max_heap
+    return -max_heap[0]
+    
+# min heap functions are straightforward, just makes them callable in the same way as the ones for max heap
+def minPush(x):
+    global min_heap
+    heapq.heappush(min_heap, x)
+    
+def minPop():
+    global min_heap
+    return heapq.heappop(min_heap)
+    
+def minPeek():
+    global min_heap
+    return min_heap[0]
+    
+
+
+class Solution:
+    def balanceHeaps(self):
+        #Balance the two heaps size, such that difference is not more than one.
+        global max_heap
+        global min_heap
+        # max heap is more than one larger than min heap
+        while len(max_heap) > len(min_heap) + 1:
+            # continue to pop from max heap and push that value onto min heap until balanced
+            minPush(maxPop())
+        # min heap is more than one larger than max heap
+        while len(min_heap) > len(max_heap) + 1:
+            # continue to pop from min heap and push that value onto max heap until balanced
+            maxPush(minPop())
+        
+    '''    
+    You don't need to call getMedian it will be called itself by driver code
+    for more info see drivers code below.
+    '''
+    def getMedian(self):
+        # return the median of the data received till now.
+        global max_heap
+        global min_heap
+        # max heap size is larger than min heap's
+        if len(max_heap) > len(min_heap):
+            # median is root of max heap
+            return maxPeek()
+        # min heap size is larger than max heap's
+        if len(max_heap) < len(min_heap):
+            # median is root of min heap
+            return minPeek()
+        # heap sizes are equal, median is average of the two roots
+        return (maxPeek() + minPeek()) / 2
+        
+        
+    def insertHeaps(self, x):
+        #:param x: value to be inserted
+        #:return: None
+        global max_heap
+        global min_heap
+        # max heap (lower half of integer values) is empty, or x value is no larger than top of max heap
+        if not max_heap or x <= maxPeek():
+            # push x onto max heap
+            maxPush(x)
+        # x value is larger than top of max heap
+        else:
+            # push x onto min heap (upper half of integer values)
+            minPush(x)
+        # ensure heap sizes are balanced after insertion
+        self.balanceHeaps()
