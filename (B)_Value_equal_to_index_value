@@ -1,0 +1,26 @@
+vim: syntax=python
+
+"""
+Python solution for Value equal to index value problem at https://www.geeksforgeeks.org/problems/value-equal-to-index-value1330/1
+difficulty: basic
+input is a list of integers, arr
+goal is to return the list of indexes (1-based indexing) of elements where value == index
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    # Function to find values in array equal to their indices
+    def valueEqualToIndex(self, arr):
+        # initialize return variable
+        result = []
+        # initialize index for 1-based indexing
+        index = 1
+        # loop through list values
+        for i in arr:
+            # value == index, add to result
+            if i == index:
+                result.append(i)
+            # increment index for next loop iteration
+            index += 1
+        # solution list found
+        return result
