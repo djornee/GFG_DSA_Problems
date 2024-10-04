@@ -1,0 +1,30 @@
+vim: syntax=python
+
+"""
+Python solution for Not a subset sum problem at https://www.geeksforgeeks.org/problems/smallest-number-subset1220/1
+difficulty: medium
+input is a sorted list of positive integers
+goal is to find the smallest positive integer that can't be represented as the sum of any subset of the list
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    """
+    the logic behind the solution is, if arr[i] is not greater than current result, since we've already checked
+    that 0,1...(result - 1) can be represented thus far, the next arr[i] values can also be represented by
+    adding arr[i] to previous sums, so result is incremented by arr[i] to get the next possible result value
+    """
+    def findSmallest(self, arr):
+        n = len(arr)
+        # initialize return variable
+        result = 1
+        
+        for i in range(n):
+            # current result value can be represented by a subset of arr
+            if arr[i] <= result:
+                # add arr[i] to find next possible result value
+                result += arr[i] 
+            # current result value can't be represented by a subset of arr
+            else:
+                break
+        return result
