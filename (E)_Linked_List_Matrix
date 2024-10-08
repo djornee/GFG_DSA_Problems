@@ -1,0 +1,48 @@
+vim: syntax=python
+
+"""
+Python solution for Linked List Matrix problem at https://www.geeksforgeeks.org/problems/linked-list-matrix/1
+difficulty: easy
+input is a 2D array, mat
+goal is to return the head node (Node attributes are "data", "right", and "down") of a 2D linked list representation of mat
+time complexity is O(n^2), auxiliary space is O(n)
+"""
+
+class Solution:
+    def constructLinkedMatrix(self, mat):
+        # initialize variable for current node, starting at top-left of matrix
+        currNode = Node(mat[0][0])
+        # keep reference to head of linked list for return
+        head = currNode
+        # will need references to the nodes in the row above the current one
+        rowAbove = [currNode]
+        # loop through top row of matrix
+        for i in range(1, len(mat)):
+            # link current node to newly constructed next node
+            currNode.right = Node(mat[0][i])
+            # move currNode pointer to new node
+            currNode = currNode.right
+            # populate rowAbove list
+            rowAbove.append(currNode)
+        
+        # loop through remaining rows of matrix
+        for y in range(1, len(mat)):
+            # create new node for leftmost value in row
+            currNode = Node(mat[y][0])
+            # link leftmost node from row above to currNode
+            rowAbove[0].down = currNode
+            # rowAbove list will be replaced with current row's nodes after they've been linked
+            rowAbove[0] = currNode
+            # loop through current row of matrix
+            for x in range(1, len(mat)):
+                # link current node to newly constructed next node
+                currNode.right = Node(mat[y][x])
+                # move currNode pointer to new node
+                currNode = currNode.right
+                # link the node from the row above to the current node
+                rowAbove[x].down = currNode
+                # replace node in row above with current node to use for linking next row
+                rowAbove[x] = currNode
+        
+        # 2D linked list constructed, return head node        
+        return head
