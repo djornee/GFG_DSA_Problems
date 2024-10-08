@@ -1,0 +1,29 @@
+vim: syntax=python
+
+"""
+Python solution for Largest Pair Sum problem at https://www.geeksforgeeks.org/problems/pair-sum--120604/1
+difficulty: easy
+input is a list, arr, of distinct, positive integers
+goal is to return the largest pair sum in arr
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    def pairsum(self, arr):
+        # initialize variables for two largest values
+        max1 = -1
+        max2 = -1
+        # loop through input list
+        for i in arr:
+            # new maximum value found
+            if i > max1:
+                # copy current maximum to max2
+                max2 = max1
+                # update max1
+                max1 = i
+            # new second-largest value found
+            elif i > max2:
+                # update max2
+                max2 = i
+        # largest pair sum is max1 + max2
+        return max1 + max2
