@@ -1,0 +1,31 @@
+vim: syntax=python
+
+"""
+Python solution for Max distance between same elements problem at https://www.geeksforgeeks.org/problems/max-distance-between-same-elements/1
+difficulty: easy
+input is a list of integers, arr
+goal is to return the maximum distance between two occurrences of the same integer value in the list
+time complexity and auxiliary space are both O(n)
+"""
+
+class Solution:
+    # Your task is to Complete this function
+    # function should return an integer
+    def maxDistance(self, arr):
+        # initialize dict for first occurrence of each unique element
+        firstIndex = {}
+        # initialize return variable
+        result = 0
+        # loop through input list
+        for i in range(len(arr)):
+            # first occurrence of element
+            if arr[i] not in firstIndex:
+                # store element -> index as key -> value in dict
+                firstIndex[arr[i]] = i
+            # not first occurrence of element
+            else:
+                # check distance between current element and its first occurrence, updating result if new maximum
+                result = max(result, i - firstIndex[arr[i]])
+        
+        # maximum distance found        
+        return result
