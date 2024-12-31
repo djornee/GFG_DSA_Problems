@@ -1,0 +1,39 @@
+vim: syntax=python
+
+"""
+Python solution for Longest Consecutive Subsequence problem at https://www.geeksforgeeks.org/problems/longest-consecutive-subsequence2449/1
+difficulty: medium
+input is a list of non-negative integers, arr
+goal is to return the length of the longest subsequence of consecutive integers (can be spread throughout arr in any order)
+"""
+
+class Solution:
+
+    #Function to return length of longest subsequence of consecutive integers.
+    def longestConsecutive(self, arr):
+        # convert list to set to remove duplicates
+        arrSet = set(arr)
+        
+        # convert set back to list and sort
+        arr = list(arrSet)
+        arr.sort()
+        
+        # initialize return variable (1 is minimum possible solution)
+        result = 1
+        # initialize variable for length of subsequence
+        count = 1
+        # loop through list, stopping one before end
+        for i in range(len(arr) - 1):
+            # element after i is consecutive (1 greater than element at i)
+            if arr[i] + 1 == arr[i + 1]:
+                # increment counter for length of subsequence
+                count += 1
+                # check for new longest consecutive subsequence
+                result = max(result, count)
+            # element after i is not consecutive
+            else:
+                # reset counter for length of subsequence
+                count = 1
+        
+        # longest consecutive subsequence found
+        return result
