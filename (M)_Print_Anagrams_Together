@@ -1,0 +1,32 @@
+vim: syntax=python
+
+"""
+Python solution for Print Anagrams Together problem at https://www.geeksforgeeks.org/problems/print-anagrams-together/1
+difficulty: medium
+input is a list of strings, arr
+goal is to return a 2d list of the same strings, grouped together if they are anagrams, preserving order of appearance
+in the original list (except that the 2d list is sorted alphabetically based on the first string in each group)
+"""
+
+class Solution:
+
+    def anagrams(self, arr):
+        
+        # initialize dict to store sorted strings as keys and strings from arr as values
+        resultDict = {}
+        
+        # loop through strings in arr, creating anagram groups in dict
+        for s in arr:
+            # create a string that is the sorted version of the string from arr
+            ss = str(sorted(s))
+            # anagram group already encountered
+            if ss in resultDict:
+                # append string to anagram group list
+                resultDict[ss].append(s)
+            # new anagram group
+            else:
+                # add new sorted string to dict with string from arr in a list as value
+                resultDict[ss] = [s]
+        
+        # retrieve 2d list of strings grouped by anagram from dict and, after sorting, return it
+        return sorted(resultDict.values())
