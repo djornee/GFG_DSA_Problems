@@ -1,0 +1,32 @@
+vim: syntax=python
+
+"""
+Python solution for Subarrays with sum K problem at https://www.geeksforgeeks.org/problems/subarrays-with-sum-k/1
+difficulty: medium
+input is an unsorted array of integers, arr, and an integer, k
+goal is to return the number of continuous subarrays of arr having sum exactly equal to k
+time complexity and auxiliary space are both O(n)
+"""
+
+class Solution:
+    # keeps count of sums at each index, then whenever sum so far - k has already been encountered (which would
+    # mean the subarray between that index and current == k), adds that count to the result to be returned
+    def countSubarrays(self, arr, k):
+        # initialize variable for running sum of arr
+        runningSum = 0
+        # initialize dict for count of sums (include 0: 1 for start of arr)
+        sums = {0: 1}
+        # initialize return variable
+        result = 0
+        
+        # loop through arr
+        for i in arr:
+            # keep track of running sum
+            runningSum += i
+            # if current sum - k has been encountered, add count to result, otherwise add nothing to result
+            result += sums.get(runningSum - k, 0)
+            # increment count of current sum, or add to dict with count of 1
+            sums[runningSum] = sums.get(runningSum, 0) + 1
+
+        # subarrays with sum k found
+        return result
