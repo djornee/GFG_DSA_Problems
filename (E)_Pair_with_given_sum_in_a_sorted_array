@@ -1,0 +1,58 @@
+vim: syntax=python
+
+"""
+Python solution for Pair with given sum in a sorted array problem at https://www.geeksforgeeks.org/problems/pair-with-given-sum-in-a-sorted-array4940/1
+difficulty: easy
+input is a sorted list of integers, arr, and an integer, target
+goal is to return the number of pairs in arr that sum up to target
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    def countPairs (self, arr, target):
+        # initialize variables for left and right pointers
+        l = 0
+        r = len(arr) - 1
+        # initialize return variable
+        result = 0
+        # loop until pointers meet
+        while l < r:
+            # check sum of current pointers
+            currSum = arr[l] + arr[r]
+            # pair with target sum found
+            if currSum == target:
+                # all remaining elements in arr are equal to target / 2
+                if arr[l] == arr[r]:
+                    # add number of pairs between pointers to result and return
+                    for n in range(1, r - l + 1):
+                        result += n
+                    return result
+                # elements in pair aren't equal
+                # count number of equal elements on the left side
+                ls = 1
+                while arr[l + 1] == arr[l]:
+                    l += 1
+                    ls += 1
+                # count number of equal elements on the right side
+                rs = 1
+                while arr[r - 1] == arr[r]:
+                    r -= 1
+                    rs += 1
+                # add number of pairs of current values to result
+                result += ls * rs
+                # increment/decrement pointers to continue checking
+                l += 1
+                r -= 1
+            
+            # sum of current pointers is below target
+            elif currSum < target:
+                # increment left pointer to increase sum
+                l += 1
+            
+            # sum of current pointers is above target
+            else:
+                # decrement right pointer to decrease sum
+                r -= 1
+        
+        # finished checking array and finding valid pairs
+        return result
