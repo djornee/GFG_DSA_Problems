@@ -1,0 +1,38 @@
+vim: syntax=python
+
+"""
+Python solution for Count the number of possible triangles problem at https://www.geeksforgeeks.org/problems/count-possible-triangles-1587115620/1
+difficulty: medium
+input is a list of positive integers, arr
+goal is to return the number of triangles that can be formed with three different elements of arr as the lengths of the sides
+time complexity is O(n^2), auxiliary space is O(1)
+"""
+
+class Solution:
+    def countTriangles(self, arr):
+        # ensure input list is sorted
+        arr.sort()
+        # initialize return variable
+        result = 0
+        
+        # loop through list from third element through end, using current element as longest side of triangle
+        for longSide in range(2, len(arr)):
+            # initialize pointers to the first and last elements that are <= longSide (short sides of triangle)
+            l = 0
+            r = longSide - 1
+            
+            # loop until l and r meet
+            while l < r:
+                # check if triangle can be formed
+                if arr[longSide] < arr[l] + arr[r]:
+                    # all pairs of elements between l and r are valid triangles when combined with longSide
+                    result += r - l
+                    # decrement right pointer to decrease combined length of short sides
+                    r -= 1
+                # triangle can't be formed with current pointers
+                else:
+                    # increment left pointer to increase combined length of short sides
+                    l += 1
+        
+        # list checked, number of triangles found
+        return result
