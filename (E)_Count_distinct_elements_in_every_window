@@ -1,0 +1,69 @@
+vim: syntax=python
+
+"""
+Python solution for Count distinct elements in every window problem at https://www.geeksforgeeks.org/problems/count-distinct-elements-in-every-window/1
+difficulty: easy
+input is a list of integers, arr, and an integer, k
+goal is to return a list of counts of distinct elements in every window of size k in arr
+time complexity and auxiliary space are both O(n)
+"""
+
+class Solution:
+    def countDistinct(self, arr, k):
+        # initialize dict for counts of elements in window
+        window = {}
+        # initialize variable for count of distinct elements
+        distinct = 0
+        # initialize return list
+        results = []
+        
+        # initialize pointer for right side of window
+        r = 0
+        # loop through elements in initial window
+        while r < k:
+            # first time an element is encountered
+            if arr[r] not in window:
+                # increment count of distinct elements
+                distinct += 1
+                # add element to dict with count 1
+                window[arr[r]] = 1
+            # element already encountered in window
+            else:
+                # increment count in dict
+                window[arr[r]] += 1
+            # move pointer to next element
+            r += 1
+        
+        # initialize pointer for left side of window
+        l = 0
+        # store first value in return list
+        results.append(distinct)
+        
+        # loop through remaining elements of arr
+        while r < len(arr):
+            # decrement count in dict to remove left element from window
+            window[arr[l]] -= 1
+            # element no longer exists in window
+            if window[arr[l]] == 0:
+                # decrement count of distinct elements
+                distinct -= 1
+            # slide pointer for left side of window
+            l += 1
+            
+            # element to be added doesn't exist yet in window
+            if arr[r] not in window or window[arr[r]] == 0:
+                # increment count of distinct elements
+                distinct += 1
+                # add element to dict with count 1
+                window[arr[r]] = 1
+            # element already exists in window
+            else:
+                # increment count in dict
+                window[arr[r]] += 1
+            # slide pointer for right side of window
+            r += 1
+            # add count for current window to return list
+            results.append(distinct)
+            
+        # list traversed and distinct counts recorded
+        return results
