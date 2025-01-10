@@ -1,0 +1,43 @@
+vim: syntax=python
+
+"""
+Python solution for Longest substring with distinct characters problem at https://www.geeksforgeeks.org/problems/longest-distinct-characters-in-string5848/1
+difficulty: easy
+input is a string of lowercase letters, s
+goal is to return the length of the longest substring of s made up of distinct characters
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    def longestUniqueSubstr(self, s):
+        # initialize array to keep track of which characters are in the current valid substring
+        chars = [False] * 26
+        # initialize return variable (1 is minimum possible result since len(s) >= 1)
+        result = 1
+        # initialize pointers for beginning and end of current valid substring
+        l = 0
+        r = 0
+        
+        # loop through input string
+        while r < len(s):
+            # calculate index to use in chars
+            c = ord(s[r]) - ord("a")
+            
+            # current character is already in substring
+            while chars[c]:
+                # remove leftmost character from substring
+                chars[ord(s[l]) - ord("a")] = False
+                # increment pointer to check next character in substring
+                l += 1
+            
+            # add current character from the right side to substring
+            chars[c] = True
+            
+            # check for new longest substring
+            result = max((r - l + 1), result)
+            
+            # increment pointer to check next character in input string
+            r += 1
+        
+        # length of longest valid substring found
+        return result
