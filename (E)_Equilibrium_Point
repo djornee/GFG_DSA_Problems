@@ -1,0 +1,28 @@
+vim: syntax=python
+
+"""
+Python solution for Equilibrium Point problem at https://www.geeksforgeeks.org/problems/equilibrium-point-1587115620/1
+difficulty: easy
+input is a list of integers, arr
+goal is to return the index of the equilibrium point (index at which sum of all elements before == sum of all
+elements after), if one exists, otherwise return -1
+"""
+
+class Solution:
+    #Function to find equilibrium point in the array.
+    def findEquilibrium(self, arr):
+        # find sum of all elements in arr
+        totSum = sum(arr)
+        # start sum for lefthand side of arr with first element
+        runningSum = arr[0]
+        # loop through remaining elements in arr
+        for i in range(1, len(arr)):
+            # check if lefthand sum == righthand sum (excluding arr[i] from both sums)
+            if runningSum == totSum - runningSum - arr[i]:
+                # equilibrium point found at index i
+                return i
+            # not at equilibrium point yet, add current element to lefthand sum and continue checking
+            runningSum += arr[i]
+        
+        # finished checking input list, no equilibrium point found
+        return -1
