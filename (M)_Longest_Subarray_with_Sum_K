@@ -1,0 +1,34 @@
+vim: syntax=python
+
+"""
+Python solution for Longest Subarray with Sum K problem at https://www.geeksforgeeks.org/problems/longest-sub-array-with-sum-k0809/1
+difficulty: medium
+input is an array of integers, arr, and an integer k
+goal is to return the length of the longest subarray with sum equal to k, if any, otherwise return 0
+"""
+
+class Solution:
+    # stores earliest index for each sum (from start of arr to that index) in dict and uses the sum: index
+    # lookup to determine whether a valid subarray ending at current index exists and calculate its length
+    def longestSubarray(self, arr, k):
+        # initialize dict for sum: index pairs (include 0: -1 for start of arr)
+        sumDict = {0: -1}
+        # initialize return variable
+        maxLength = 0
+        # initialize variable for running sum
+        sumSoFar = 0
+        
+        # loop through input list
+        for i in range(len(arr)):
+            # add current element to running sum
+            sumSoFar += arr[i]
+            # valid subarray found
+            if (sumSoFar - k) in sumDict:
+                # calculate length of current subarray and update maxLength if new longest
+                maxLength = max(i - sumDict[(sumSoFar - k)], maxLength)
+            # first time this running sum has been encountered, add it with current index to dict
+            if sumSoFar not in sumDict:
+                sumDict[sumSoFar] = i
+        
+        # checked list and found longest subarray with sum k (or if there were none, maxLength is still 0)
+        return maxLength
