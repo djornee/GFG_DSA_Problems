@@ -1,0 +1,43 @@
+vim: syntax=python
+
+"""
+Python solution for Largest subarray of 0's and 1's problem at https://www.geeksforgeeks.org/problems/largest-subarray-of-0s-and-1s/1
+difficulty: easy
+input is an array of 0s and 1s, arr
+goal is to return the length of the longest subarray with equal number of 0s and 1s, if any, otherwise return 0
+time complexity and auxiliary space are both O(n)
+"""
+
+class Solution:
+    # tracks disparity between number of 0s and 1s so far and stores the first index of each of these unique
+    # totals, then uses that as a lookback to check whether there's a valid subarray ending at each index
+    def maxLen(self, arr):
+        # will store disparity--how many more (positive numbers) or fewer (negative numbers) 1s than 0s there have
+        # been so far; 0 indicates an equal number of 0s and 1s
+        more1s = 0
+        # initialize return variable
+        result = 0
+        # initialize dict for 0s/1s disparity: index pairs (include 0: -1 for start of arr)
+        onesDict = {0: -1}
+        
+        # loop through input array
+        for i in range(len(arr)):
+            # current element is 1
+            if arr[i] == 1:
+                # increment counter for how many more 1s than 0s there have been
+                more1s += 1
+            # current element is 0
+            else:
+                # decrement counter for how many more 1s than 0s there have been
+                more1s -= 1
+            
+            # elements between first instance (if in dict) of this disparity and current index form valid subarray
+            if more1s in onesDict:
+                # update result if new longest subarray
+                result = max(result, i - onesDict[more1s])
+            # current index is the first instance of this disparity
+            else:
+                onesDict[more1s] = i
+        
+        # checked arr and found longest valid subarray (or if there were none, result is still 0)
+        return result
