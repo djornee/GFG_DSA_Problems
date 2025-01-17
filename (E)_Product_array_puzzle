@@ -1,0 +1,60 @@
+vim: syntax=python
+
+"""
+Python solution for Product array puzzle problem at https://www.geeksforgeeks.org/problems/product-array-puzzle4525/1
+difficulty: easy
+input is an array of integers, arr
+goal is to return an array where each index i has the product of all elements in arr except arr[i]
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    def productExceptSelf(self, arr):
+        # there are at least two 0s in arr
+        if arr.count(0) > 1:
+            # all products will be 0
+            return [0] * len(arr)
+        
+        # there is exactly one 0 in arr    
+        if arr.count(0) == 1:
+            # initialize variable for arr product
+            product = 1
+            # loop through arr elements
+            for n in arr:
+                # factor all non-0 elements into product
+                if n:
+                    product *= n
+            
+            # initialize return variable
+            results = []
+            # loop arr elements
+            for n in arr:
+                # current element isn't the single 0 in arr
+                if n:
+                    # product of all other elements is 0, since there's a 0 in arr
+                    results.append(0)
+                # current element is the single 0 in arr
+                else:
+                    # product of all other elements calculated during previous loop
+                    results.append(product)
+            
+            # return array for the case of exactly one 0 in arr constructed
+            return results
+        
+        # there are no 0s in arr
+        # initialize variable for arr product
+        product = 1
+        # loop through arr elements
+        for n in arr:
+            # include all elements in product
+            product *= n
+        
+        # initialize return variable
+        results = []
+        # loop through arr elements
+        for n in arr:
+            # add product of all elements but with current element removed
+            results.append(product // n)
+        
+        # return array for the case of no 0s in arr constructed
+        return results
