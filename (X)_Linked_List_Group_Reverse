@@ -1,0 +1,88 @@
+vim: syntax=python
+
+"""
+Python solution for Linked List Group Reverse problem at https://www.geeksforgeeks.org/problems/reverse-a-linked-list-in-groups-of-given-size/1
+difficulty: hard
+input is the head node of a linked list (node attributes are "data" and "next") and an integer, k
+goal is to reverse the order of every k nodes in the linked list (if not divisible by k, remaining nodes considered final group)
+
+"""
+class Solution:
+    def reverseKGroup(self, head, k):
+        # head is only node in list
+        if not head.next:
+            # nothing to reverse
+            return head
+        
+        # pointer to what will be the tail of the first group, once reversed
+        currTail = head
+        # initialize variable for node currently being processed
+        currNode = head
+        # initialize variable for node after current node
+        nextNode = head.next
+        # initialize counter for nodes in group
+        nodes = 1
+        
+        # loop through first group of k nodes
+        while nodes < k:
+            # swap order of nodes by temporarily storing the node after next,
+            temp = nextNode.next
+            # directing nextNode's "next" pointer back at currNode,
+            nextNode.next = currNode
+            # moving currNode to the next node,
+            currNode = nextNode
+            # and moving nextNode to the node that was originally its next node
+            nextNode = temp
+            # increment counter for nodes in group
+            nodes += 1
+            
+        # retain a reference to what has become the first node of the first group to return at the end
+        returnHead = currNode
+        
+        # there are exactly k nodes in the list
+        if not nextNode:
+            # set "next" pointer of original head node of list to None
+            currTail.next = None
+            # return new head node of list
+            return returnHead
+        
+        # there are more than k nodes in the list, loop until reaching the end of the list
+        while True:
+            # reset counter for number of nodes in group
+            nodes = 1
+            # move pointers to first two nodes of new group
+            currNode = nextNode
+            nextNode = nextNode.next
+            # pointer to what will be the tail of the next group, once reversed
+            nextTail = currNode
+            
+            # loop through another group of k nodes
+            while nodes < k:
+                # reached end of list before the end of a group of k
+                if not nextNode:
+                    # link previous group's tail to the new head node of the current group (final node of original list)
+                    currTail.next = currNode
+                    # point "next" for final node of reversed list to None
+                    nextTail.next = None
+                    # return new head node of list
+                    return returnHead
+                
+                # reverse order while traversing list in same manner as above
+                temp = nextNode.next
+                nextNode.next = currNode
+                currNode = nextNode
+                nextNode = temp
+                nodes += 1
+            
+            # another group of k nodes has been processed
+            # link previous group's tail to the new head node of the current group
+            currTail.next = currNode
+            # update pointer to current group's tail before moving to the next group
+            currTail = nextTail
+            
+            # end of group of k coincides with end of linked list
+            if not nextNode:
+                # point "next" for final node of reversed list to None
+                currTail.next = None
+                # return new head node of list
+                return returnHead
