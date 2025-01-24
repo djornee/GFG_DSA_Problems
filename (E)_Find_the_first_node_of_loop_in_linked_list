@@ -1,0 +1,35 @@
+vim: syntax=python
+
+"""
+Python solution for Find the first node of loop in linked list problem at https://www.geeksforgeeks.org/problems/find-the-first-node-of-loop-in-linked-list--170645/1
+difficulty: easy
+input is the head node of a linked list (node attributes are "data" and "next")
+goal is to return the first node of the loop in the linked list, if one exists, otherwise return None
+time complexity is O(n), auxiliary space is O(1)
+"""
+
+class Solution:
+    # uses Floyd's cycle detection algorithm
+    def findFirstNode(self, head):
+        # initialize slow and fast pointers, both starting at head node
+        slow = head
+        fast = head
+        # loop until end of list
+        while fast.next and fast.next.next:
+            # move slow pointer forward one node, fast pointer two nodes
+            slow = slow.next
+            fast = fast.next.next
+            # fast pointer completed the loop and caught up to slow
+            if slow == fast:
+                # find first node of loop by keeping one pointer at meeting point and moving the other back to head
+                slow = head
+                # loop until pointers meet again
+                while slow != fast:
+                    # move each pointer forward one node
+                    slow = slow.next
+                    fast = fast.next
+                # meeting point is first node of loop
+                return slow
+        
+        # fast pointer reached end of list--no loop
+        return None
